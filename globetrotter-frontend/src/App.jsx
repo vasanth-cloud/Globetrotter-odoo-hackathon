@@ -1,13 +1,24 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './utils/AuthContext';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import CreateTrip from './pages/CreateTrip';
 import TripDetails from './pages/TripDetails';
+import TripTimeline from './pages/TripTimeline';
+import SharedTrip from './pages/SharedTrip';
+import Profile from './pages/Profile';
 
-function PrivateRoute({ children }) {
-  const { user, loading } = useAuth();
-  
+function ProtectedRoute({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+    setLoading(false);
+  }, []);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -15,44 +26,25 @@ function PrivateRoute({ children }) {
       </div>
     );
   }
-  
-  return user ? children : <Navigate to="/login" />;
+
+  return isAuthenticated ? children : <Navigate to="/login" />;
 }
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route 
-            path="/dashboard" 
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/trips/new" 
-            element={
-              <PrivateRoute>
-                <CreateTrip />
-              </PrivateRoute>
-            } 
-          />
-          <Route 
-            path="/trips/:id" 
-            element={
-              <PrivateRoute>
-                <TripDetails />
-              </PrivateRoute>
-            } 
-          />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/create-trip" element={<ProtectedRoute><CreateTrip /></ProtectedRoute>} />
+        <Route path="/trips/:id" element={<ProtectedRoute><TripDetails /></ProtectedRoute>} />
+        <Route path="/trips/:id/timeline" element={<ProtectedRoute><TripTimeline /></ProtectedRoute>} />
+        <Route path="/shared/:id" element={<SharedTrip />} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      </Routes>
+    </Router>
   );
 }
 
