@@ -20,3 +20,11 @@ class Budget(BaseModel):
     class Config:
         from_attributes = True
 
+class BudgetSummary(BaseModel):
+    total_budget: float
+    transport: float
+    stay: float
+    activities: float
+    meals: float
+    other: float
+    
