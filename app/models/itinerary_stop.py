@@ -17,7 +17,8 @@ class ItineraryStop(Base):
     notes = Column(Text, nullable=True)
     
     # Relationships
-    
+    trip = relationship("Trip", back_populates="itinerary_stops")
+    city = relationship("City", back_populates="itinerary_stops")
     activities = relationship("ItineraryActivity", back_populates="stop", cascade="all, delete-orphan")
 
 
