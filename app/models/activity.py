@@ -9,3 +9,10 @@ class Activity(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False, index=True)
     category = Column(String, nullable=False) 
+    description = Column(Text, nullable=True)
+    estimated_cost = Column(Float, default=0.0)
+    duration_hours = Column(Float, default=1.0)
+    image_url = Column(String, nullable=True)
+    
+    # Relationships
+    itinerary_activities = relationship("ItineraryActivity", back_populates="activity")
