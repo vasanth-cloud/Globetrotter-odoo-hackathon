@@ -32,6 +32,7 @@ class ItineraryStopUpdate(BaseModel):
     order_index: Optional[int] = None
     notes: Optional[str] = None
 
+
 class ItineraryStop(BaseModel):
     id: int
     trip_id: int
