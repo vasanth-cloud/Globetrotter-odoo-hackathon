@@ -12,12 +12,3 @@ class CityCreate(CityBase):
     description: Optional[str] = None
     image_url: Optional[str] = None
 
-class City(CityBase):
-    id: int
-    cost_index: float
-    popularity: int
-    description: Optional[str] = None
-    image_url: Optional[str] = None
-    
-    class Config:
-        from_attributes = True
