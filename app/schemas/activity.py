@@ -11,3 +11,11 @@ class ActivityCreate(ActivityBase):
     duration_hours: Optional[float] = 1.0
     image_url: Optional[str] = None
 
+class Activity(ActivityBase):
+    id: int
+    estimated_cost: float
+    duration_hours: float
+    image_url: Optional[str] = None
+    
+    class Config:
+        from_attributes = True
