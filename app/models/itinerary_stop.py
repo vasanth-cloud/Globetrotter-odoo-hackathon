@@ -1,6 +1,3 @@
-#app/models/itinerary_stop.py
-
-
 from sqlalchemy import Column, Integer, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from app.db.database import Base
